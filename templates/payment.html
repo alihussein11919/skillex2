@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo { 
+            font-weight: 700; 
+            color: var(--primary); 
+            font-size: 1.8rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links { 
+            display: flex; 
+            align-items: center; 
+            gap: 2rem; 
+        }
+
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            font-weight: 500; 
+            transition: color 0.3s ease; 
+        }
+
+        .nav-links a:hover { 
+            color: var(--primary); 
+        }
+
+        .btn { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn:hover { 
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            flex: 1;
+        }
+
+        .payment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .payment-form {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(31, 120, 114, 0.1);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(31, 120, 114, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-light);
+        }
+
+        .summary-value {
+            font-weight: 600;
+        }
+
+        .total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #E5E7EB;
+        }
+
+        .total .summary-label,
+        .total .summary-value {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        .security-badge i {
+            font-size: 2rem;
+            color: var(--success);
+        }
+
+        .security-badge p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+
+        .footer-grid .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .footer-grid p:hover {
+            color: var(--accent);
+        }
+
+        .socials {
+            margin-top: 1.5rem;
+        }
+
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .payment-container { grid-template-columns: 1fr; }
+            .card-grid { grid-template-columns: 1fr; }
+            .payment-methods { flex-direction: column; }
+            .order-summary { position: static; }
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/student-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <div class="nav-links">
+            <a href="/student-home">Home</a>
+            <a href="/about">About Us</a>
+            <a href="/faq">FAQ</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                <span>Sarah Chen</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="payment-container">
+            <!-- Payment Form -->
+            <div class="payment-form">
+                <h2 class="form-title">Payment Details</h2>
+                
+                <!-- Payment Methods -->
+                <div class="payment-methods">
+                    <div class="payment-method active">
+                        <i class="fas fa-credit-card"></i>
+                        <div>Credit Card</div>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-paypal"></i>
+                        <div>PayPal</div>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-university"></i>
+                        <div>Bank Transfer</div>
+                    </div>
+                </div>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" id="cardName" placeholder="John Smith">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billingAddress">Billing Address</label>
+                        <input type="text" id="billingAddress" placeholder="Street Address">
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" placeholder="City">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" placeholder="State">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code</label>
+                            <input type="text" id="zipCode" placeholder="12345">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-lock"></i>
+                        Pay Now
+                    </button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Order Summary</h2>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Course Fee</span>
+                    <span class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Platform Fee</span>
+                    <span class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Discount Applied</span>
+                    <span class="summary-value">-$0.00</span>
+                </div>
+                <div class="summary-item total">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-value">$0.00</span>
+                </div>
+
+                <button class="btn" style="width: 100%; margin-top: 1.5rem;">
+                    <i class="fas fa-lock"></i>
+                    Complete Payment
+                </button>
+
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>Your payment information is encrypted and secure. We never store your credit card details.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+    
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+    
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+            });
+        });
+
+        // Form submission
+        const paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add your payment processing logic here
+            alert('Payment processing... This is a demo.');
+        });
+    </script>
+</body>
+</html> 

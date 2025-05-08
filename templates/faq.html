@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reuse the common styles from payment.html */
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reuse navbar and footer styles from payment.html */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo { 
+            font-weight: 700; 
+            color: var(--primary); 
+            font-size: 1.8rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links { 
+            display: flex; 
+            align-items: center; 
+            gap: 2rem; 
+        }
+
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            font-weight: 500; 
+            transition: color 0.3s ease; 
+        }
+
+        .nav-links a:hover { 
+            color: var(--primary); 
+        }
+
+        .btn { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover { 
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            flex: 1;
+        }
+
+        .faq-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .page-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .faq-section {
+            display: none;
+        }
+
+        .faq-section.active {
+            display: block;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-light);
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer p {
+            color: var(--text-light);
+            line-height: 1.6;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item.active .faq-question {
+            background: var(--bg-light);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+
+        .footer-grid .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .footer-grid p:hover {
+            color: var(--accent);
+        }
+
+        .socials {
+            margin-top: 1.5rem;
+        }
+
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-title h1 { font-size: 2rem; }
+            .footer-grid { gap: 2rem; }
+            .footer-grid > div { flex: 100%; }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a { margin: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/teacher-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                <span>Sarah Chen</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="faq-container">
+            <div class="page-title">
+                <h1>Frequently Asked Questions</h1>
+                <p>Find answers to common questions about Skillex</p>
+            </div>
+
+            <div class="category-buttons">
+                <button class="category-btn active" data-category="general">General</button>
+                <button class="category-btn" data-category="teachers">Teachers</button>
+                <button class="category-btn" data-category="students">Students</button>
+                <button class="category-btn" data-category="payments">Payments</button>
+                <button class="category-btn" data-category="technical">Technical</button>
+            </div>
+
+            <!-- General FAQ Section -->
+            <div class="faq-section active" id="general">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What is Skillex?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Skillex is an online platform that connects skilled teachers with eager learners. We facilitate one-on-one lessons, group classes, and educational resource sharing across various subjects and skills.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I get started with Skillex?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Getting started is easy! Simply create an account, choose whether you want to teach or learn, complete your profile, and start exploring our marketplace of courses and teachers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What subjects are available on Skillex?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer a wide range of subjects including languages, programming, music, arts, academic subjects, professional skills, and more. Our marketplace is constantly growing with new subjects and skills.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teachers FAQ Section -->
+            <div class="faq-section" id="teachers">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I become a teacher on Skillex?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To become a teacher, create a teacher account, complete your profile with qualifications and experience, create your course offerings, and submit them for approval. Once approved, you can start accepting students.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How much can I earn as a teacher?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Teachers set their own rates and keep 80% of their earnings. Your income potential depends on your expertise, teaching hours, and rates. Many of our teachers earn a substantial income through both live sessions and digital resources.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What tools do I need to teach online?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You'll need a reliable internet connection, a computer with a webcam and microphone, and any specific tools related to your subject (e.g., digital drawing tablet for art classes). We provide the virtual classroom platform.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students FAQ Section -->
+            <div class="faq-section" id="students">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I find the right teacher?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can browse teachers by subject, read reviews, filter by price and availability, and even book trial lessons. Our search filters help you find teachers that match your learning style and goals.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I schedule lessons at my convenience?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! You can view teacher availability in your time zone and book lessons that fit your schedule. Many teachers offer flexible scheduling options, including evenings and weekends.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What happens if I need to cancel a lesson?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Lessons can be cancelled or rescheduled up to 24 hours before the scheduled time for a full refund. Late cancellations may be subject to our cancellation policy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments FAQ Section -->
+            <div class="faq-section" id="payments">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What payment methods are accepted?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept major credit cards, PayPal, and bank transfers. All payments are processed securely through our platform to protect both teachers and students.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How does the payment process work?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Payment is collected when you book a lesson. Funds are held securely and released to the teacher 24 hours after the lesson is completed successfully.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Are there any additional fees?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We charge a small platform fee to cover payment processing and platform maintenance. All fees are clearly displayed before you make a payment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical FAQ Section -->
+            <div class="faq-section" id="technical">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What are the technical requirements?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You need a stable internet connection (minimum 5Mbps), a modern web browser (Chrome, Firefox, Safari), and a device with a camera and microphone for video lessons.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I join a virtual classroom?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Simply click the lesson link in your dashboard or email reminder 5 minutes before the scheduled time. Our virtual classroom opens in your browser - no downloads required.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What if I experience technical issues?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our support team is available 24/7 to help with technical issues. You can also check our troubleshooting guide or contact us through live chat for immediate assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+    
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+    
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Category switching
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const faqSections = document.querySelectorAll('.faq-section');
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.dataset.category;
+                
+                // Update active button
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show selected category
+                faqSections.forEach(section => {
+                    if (section.id === category) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // FAQ accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html> 

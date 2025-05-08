@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home (Teacher) - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    /* Ensure the menu is a column of items */
+.dropdown-menu {
+  /* keep all your existing properties… */
+  display: none;                /* hidden by default */
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  background: #fff;
+  box-shadow: var(--shadow-md);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 160px;
+  z-index: 1001;
+
+  /* add these: */
+  display: flex;
+  flex-direction: column;
+}
+
+/* when shown, we just toggle visibility */
+.dropdown-menu.show {
+  display: flex;                /* already flex, but just in case */
+}
+
+/* each link stays flex for icon+text, but will now stack */
+.dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.user-btn .username {
+      font-size: 1.2rem;   /* change to whatever you like */
+      font-weight: 500;
+    }
+
+/* size and color the user icon */
+.user-icon {
+  font-size: 1.5rem;           /* match your avatar size */
+  color: #1F7872;      /* or another variable you prefer */
+}
+
+
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+        
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo { 
+            font-weight:700; 
+            color:var(--primary); 
+            font-size:1.8rem; 
+            display:flex; 
+            align-items:center; 
+            gap:0.5rem;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary); }
+        .btn { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn:hover { 
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile i.fas.fa-caret-down {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-left: 0.2rem;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            min-width: 140px;
+            z-index: 100;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .user-profile.open .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu .btn-outline {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--accent);
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .dropdown-menu .btn-outline:hover {
+            background: var(--bg-light);
+            color: var(--primary);
+        }
+
+        .dropdown-menu .btn-outline i {
+            margin-right: 0.5rem;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: #fff;
+            border-radius: 20px;
+            margin: 2rem 5%;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, var(--primary) 0%, transparent 100%);
+            opacity: 0.05;
+            z-index: 0;
+        }
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            position: relative;
+        }
+        .welcome-section p {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 1rem auto;
+            position: relative;
+        }
+
+        /* Experience Cards */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 5%;
+            position: relative;
+        }
+
+        .experience-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .experience-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .experience-card h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .experience-card h2 i {
+            font-size: 2rem;
+        }
+
+        .experience-card p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .experience-card .features {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-item i {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        .experience-card .btn {
+            width: 100%;
+            justify-content: center;
+            font-size: 1.1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Decorative Shapes */
+        .shape {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .shape-1 {
+            top: 120px;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            background: var(--gradient-primary);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: morphing 15s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            bottom: 10%;
+            left: 5%;
+            width: 180px;
+            height: 180px;
+            background: var(--gradient-accent);
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morphing 18s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            top: 40%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-light);
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            animation: morphing 20s ease-in-out infinite;
+        }
+
+        @keyframes morphing {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+        .footer-grid .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .footer-grid p:hover {
+            color: var(--accent);
+        }
+        .socials {
+            margin-top: 1.5rem;
+        }
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/teacher-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-dropdown">
+                <button class="user-btn">
+  <i class="fas fa-user-circle user-icon"></i>
+  <span class="username">{{ user_name }}</span>
+  <i class="fas fa-caret-down caret"></i>
+</button>
+
+                  
+                <div class="dropdown-menu">
+                  <a href="{{ url_for('teacher_dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                  </a>
+                  <a href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                  </a>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Decorative Shapes -->
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+
+        <div class="welcome-section">
+            <h1>Welcome to Your Teaching Journey</h1>
+            <p>Share your expertise and inspire others while building your teaching career with Skillex</p>
+        </div>
+
+        <div class="experience-grid">
+            <!-- Teaching Experience -->
+            <div class="experience-card">
+                <h2><i class="fas fa-chalkboard-teacher"></i> Start Teaching</h2>
+                <p>Join our community of expert educators and share your knowledge with students worldwide. Create engaging lessons and build your teaching profile.</p>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Set your own schedule and rates</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Access teaching tools and resources</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Connect with motivated students</span>
+                    </div>
+                </div>
+                <a href="/create-lesson" class="btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Start Teaching
+                </a>
+            </div>
+
+            <!-- Marketplace Experience -->
+            <div class="experience-card">
+                <h2><i class="fas fa-store"></i> Sell Resources</h2>
+                <p>Create and sell educational resources, course materials, and digital products to support student learning and generate additional income.</p>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Create digital learning materials</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Set competitive prices</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Reach global audience</span>
+                    </div>
+                </div>
+                <a href="/create-product" class="btn">
+                    <i class="fas fa-upload"></i>
+                    List Resources
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+    
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+    
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Toggle each dropdown
+          document.querySelectorAll('.user-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+              e.stopPropagation();  // don't immediately close
+              const menu = btn.nextElementSibling;
+              menu.classList.toggle('show');
+              btn.querySelector('.caret').classList.toggle('rotated');
+            });
+          });
+      
+          // Click anywhere else? Close all
+          document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+              menu.classList.remove('show');
+              const caret = menu.previousElementSibling.querySelector('.caret');
+              if (caret) caret.classList.remove('rotated');
+            });
+          });
+        });
+      </script>
+      
+</body>
+</html> 

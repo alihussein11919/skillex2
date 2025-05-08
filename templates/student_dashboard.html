@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            --progress-bg: #E5E7EB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        /* Navigation Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--primary);
+            padding: 3px;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-username {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .profile-level {
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-highlight {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            text-align: left;
+        }
+        
+        .skill-highlight h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .skill-level {
+            color: var(--text-light);
+        }
+
+        /* Edit Skill Button and Modal */
+        .edit-skill-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-skill-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 500px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(31, 120, 114, 0.1);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #ddd;
+            background: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+
+        /* Skill Mastery Styles */
+        .skill-mastery-card {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-info h3 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        
+        .skill-mastery-level {
+            margin-left: auto;
+        }
+        
+        .level-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .level-badge.beginner {
+            background: rgba(114, 176, 149, 0.2);
+            color: var(--success);
+        }
+        
+        .level-badge.intermediate {
+            background: rgba(31, 120, 114, 0.2);
+            color: var(--primary);
+        }
+        
+        .level-badge.advanced {
+            background: rgba(209, 63, 49, 0.2);
+            color: var(--accent);
+        }
+        
+        .mastery-stars {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+            font-size: 1.8rem;
+            color: #FFD700;
+        }
+        
+        .mastery-stars i {
+            margin: 0 0.3rem;
+        }
+        
+        .mastery-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 1.5rem;
+        }
+        
+        .mastery-metric {
+            text-align: center;
+        }
+        
+        .metric-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Progress Section */
+        .progress-section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--progress-bg);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Partners Section */
+        .partners-section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .partner-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .partner-item:hover {
+            background: var(--bg-light);
+        }
+
+        .partner-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .partner-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .partner-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Achievements Section */
+        .achievements-section {
+            margin-top: 2rem;
+        }
+
+        .achievements-section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .achievement-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Ongoing Lessons Section */
+        .ongoing-lessons {
+            margin-top: 2rem;
+        }
+
+        .ongoing-lessons h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lesson-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .lesson-teacher {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lesson-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lesson-actions .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: 4rem;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        .footer-grid p:hover {
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        .socials {
+            margin-top: 1.5rem;
+        }
+
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .socials a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media(max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width: 768px) {
+            nav { display: none; }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <a href="/student-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <nav>
+            <a href="/student-home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-profile">
+                <span>{{ user.first_name }} {{ user.last_name }}</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="dashboard-grid">
+            <!-- Left Column - Profile -->
+            <div class="profile-section card">
+                <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+                <p class="profile-username">@{{ user.username }}</p>
+                <div class="profile-level">Level 24 · 2800 SP</div>
+                
+                <div class="skill-highlight">
+                    <h3><i class="fas fa-star"></i> Primary Skill</h3>
+                    <p class="skill-name">{{ user.primary_skill|title }}</p>
+                    <p class="skill-level">Level: {{ user.skill_level|capitalize }}</p>
+                    <button class="edit-skill-btn" id="editSkillBtn">
+                        <i class="fas fa-edit"></i> Change Skill
+                    </button>
+                </div>
+                
+                <!-- Edit Skill Modal -->
+                <div id="editSkillModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h2>Edit Your Primary Skill</h2>
+                        <form method="POST" action="{{ url_for('update_skill') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <label for="primary_skill">Select New Primary Skill</label>
+                                <select id="primary_skill" name="primary_skill" class="form-control">
+                                    <option value="">-- Select a Skill --</option>
+                                    {% for group_label, options in grouped_skills %}
+                                        <optgroup label="{{ group_label }}">
+                                            {% for value, label in options %}
+                                                <option value="{{ value }}" {% if value == user.primary_skill %}selected{% endif %}>
+                                                    {{ label }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="skill_level">Select Your Skill Level</label>
+                                <select id="skill_level" name="skill_level" class="form-control">
+                                    <option value="beginner" {% if user.skill_level == 'beginner' %}selected{% endif %}>Beginner</option>
+                                    <option value="intermediate" {% if user.skill_level == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                                    <option value="advanced" {% if user.skill_level == 'advanced' %}selected{% endif %}>Advanced</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn">Update Skill</button>
+                                <button type="button" class="btn-cancel" id="cancelEdit">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column - Progress -->
+            <div class="card">
+                <div class="progress-section">
+                    <h2><i class="fas fa-chart-line"></i> Skill Mastery</h2>
+                    <div class="skill-mastery-card">
+                        <div class="skill-info">
+                            <h3>{{ user.primary_skill|title }}</h3>
+                            <div class="skill-mastery-level">
+                                <span class="level-badge 
+                                    {% if user.skill_level == 'beginner' %}beginner
+                                    {% elif user.skill_level == 'intermediate' %}intermediate
+                                    {% elif user.skill_level == 'advanced' %}advanced
+                                    {% else %}beginner{% endif %}">
+                                    {{ user.skill_level|capitalize }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mastery-stars">
+                            {% if user.skill_level == 'beginner' %}
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            {% elif user.skill_level == 'intermediate' %}
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            {% elif user.skill_level == 'advanced' %}
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        </div>
+                        <div class="mastery-info">
+                            <div class="mastery-metric">
+                                <span class="metric-label">Practice Hours</span>
+                                <span class="metric-value">
+                                    {% if user.skill_level == 'beginner' %}12
+                                    {% elif user.skill_level == 'intermediate' %}48
+                                    {% elif user.skill_level == 'advanced' %}96
+                                    {% else %}8{% endif %}
+                                </span>
+                            </div>
+                            <div class="mastery-metric">
+                                <span class="metric-label">Sessions Completed</span>
+                                <span class="metric-value">
+                                    {% if user.skill_level == 'beginner' %}4
+                                    {% elif user.skill_level == 'intermediate' %}16
+                                    {% elif user.skill_level == 'advanced' %}32
+                                    {% else %}2{% endif %}
+                                </span>
+                            </div>
+                            <div class="mastery-metric">
+                                <span class="metric-label">Next Level In</span>
+                                <span class="metric-value">
+                                    {% if user.skill_level == 'beginner' %}10 sessions
+                                    {% elif user.skill_level == 'intermediate' %}15 sessions
+                                    {% elif user.skill_level == 'advanced' %}Expert
+                                    {% else %}10 sessions{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div class="achievements-section">
+                <h2><i class="fas fa-trophy"></i> Recent Achievements</h2>
+                <div class="achievements-grid">
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="achievement-title">Quick Learner</h3>
+                        <p class="achievement-desc">Completed 5 skills in a month</p>
+                    </div>
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="achievement-title">Community Leader</h3>
+                        <p class="achievement-desc">Helped 50 users</p>
+                    </div>
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="achievement-title">Skill Master</h3>
+                        <p class="achievement-desc">Reached expert level in 3 skills</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+  
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+  
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+  
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+  
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal and Button JavaScript -->
+    <script>
+        // Get modal elements
+        const modal = document.getElementById('editSkillModal');
+        const editBtn = document.getElementById('editSkillBtn');
+        const closeModal = document.querySelector('.close-modal');
+        const cancelBtn = document.getElementById('cancelEdit');
+        
+        // Open modal when edit button is clicked
+        editBtn.addEventListener('click', function() {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
+        
+        // Close modal functions
+        function closeModalFunc() {
+            modal.classList.remove('show');
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 300); // Wait for animation to complete
+            document.body.style.overflow = ''; // Enable scrolling again
+        }
+        
+        // Close modal when clicking the X
+        closeModal.addEventListener('click', closeModalFunc);
+        
+        // Close modal when clicking cancel button
+        cancelBtn.addEventListener('click', closeModalFunc);
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModalFunc();
+            }
+        });
+        
+        // Prevent closing when clicking inside the modal content
+        document.querySelector('.modal-content').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    </script>
+</body>
+
+</html> 

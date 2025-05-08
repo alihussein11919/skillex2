@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Lesson - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+        
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo { 
+            font-weight:700; 
+            color:var(--primary); 
+            font-size:1.8rem; 
+            display:flex; 
+            align-items:center; 
+            gap:0.5rem;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary); }
+        .btn { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .btn:hover { 
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: #fff;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(31, 120, 114, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group .hint {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary);
+            background: var(--bg-light);
+        }
+
+        .time-slot input[type="checkbox"] {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .time-slot label {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+        .footer-grid .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .footer-grid p:hover {
+            color: var(--accent);
+        }
+        .socials {
+            margin-top: 1.5rem;
+        }
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .form-container {
+                padding: 2rem;
+            }
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/teacher-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile">
+                <span>Sarah Chen</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Create Your Lesson</h1>
+            <p>Fill out the form below to submit your lesson for approval</p>
+        </div>
+
+        <div class="form-container">
+            <form id="lessonForm" onsubmit="handleSubmit(event)">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="lessonTitle">Lesson Title</label>
+                            <input type="text" id="lessonTitle" required>
+                            <div class="hint">Make it clear and catchy</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select a category</option>
+                                <option value="programming">Programming</option>
+                                <option value="languages">Languages</option>
+                                <option value="music">Music</option>
+                                <option value="art">Art & Design</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Lesson Description</label>
+                        <textarea id="description" required></textarea>
+                        <div class="hint">Describe what students will learn and achieve</div>
+                    </div>
+                </div>
+
+                <!-- Expertise & Requirements -->
+                <div class="form-section">
+                    <h2><i class="fas fa-graduation-cap"></i> Expertise & Requirements</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="expertise">Your Expertise Level</label>
+                            <select id="expertise" required>
+                                <option value="">Select your level</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Years of Experience</label>
+                            <input type="number" id="experience" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">Student Requirements</label>
+                        <textarea id="requirements" placeholder="List any prerequisites or requirements for students"></textarea>
+                    </div>
+                </div>
+
+                <!-- Scheduling & Pricing -->
+                <div class="form-section">
+                    <h2><i class="fas fa-clock"></i> Scheduling & Pricing</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="duration">Lesson Duration (minutes)</label>
+                            <select id="duration" required>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                                <option value="90">90 minutes</option>
+                                <option value="120">120 minutes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price per Lesson ($)</label>
+                            <input type="number" id="price" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Available Time Slots</label>
+                        <div class="time-slots">
+                            <div class="time-slot">
+                                <input type="checkbox" id="morning">
+                                <label for="morning">Morning</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="afternoon">
+                                <label for="afternoon">Afternoon</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="evening">
+                                <label for="evening">Evening</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="weekend">
+                                <label for="weekend">Weekend</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h2><i class="fas fa-plus-circle"></i> Additional Information</h2>
+                    <div class="form-group">
+                        <label for="materials">Learning Materials</label>
+                        <textarea id="materials" placeholder="List any materials or resources you'll provide"></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to Skillex's teaching policies and terms of service</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">Cancel</button>
+                    <button type="submit" class="btn">Submit for Approval</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+    
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+    
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Validate form
+            const form = document.getElementById('lessonForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Get all form data
+            const formData = {
+                title: document.getElementById('lessonTitle').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                expertise: document.getElementById('expertise').value,
+                experience: document.getElementById('experience').value,
+                requirements: document.getElementById('requirements').value,
+                duration: document.getElementById('duration').value,
+                price: document.getElementById('price').value,
+                timeSlots: {
+                    morning: document.getElementById('morning').checked,
+                    afternoon: document.getElementById('afternoon').checked,
+                    evening: document.getElementById('evening').checked,
+                    weekend: document.getElementById('weekend').checked
+                },
+                materials: document.getElementById('materials').value
+            };
+
+            // Here you would typically send the data to your backend
+            console.log('Form submitted:', formData);
+            
+            // Show success message and redirect
+            alert('Your lesson has been submitted for approval!');
+            window.location.href = '/teacher-dashboard';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillex</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1F7872;
+      --secondary: #1A202C;
+      --accent: #D13F31;
+      --success: #72B095;
+      --light: #DEDBA7;
+      --text-dark: #1A202C;
+      --text-light: #72B095;
+      --bg-light: #F9FAFB;
+      
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+      --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+      --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+      
+      /* Shadows */
+      --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+      --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+      --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+    header { position:fixed; top:0; width:100%; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05); display:flex; justify-content:space-between; align-items:center; padding:1rem 3%; z-index:1000; }
+    .logo { font-weight:700; color:var(--primary); font-size:1.8rem; display:flex; align-items:center; gap:0.5rem; }
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .hero { display:flex; flex-direction:column; align-items:center; text-align:center; padding:10rem 2rem 4rem; background:linear-gradient(90deg, var(--primary) 0%, var(--success) 100%); color:#fff; }
+    .hero h1 { font-size:2.5rem; margin-bottom:1rem; }
+    .hero p { max-width:600px; margin-bottom:2rem; color:var(--light); }
+    .hero .btns a { margin:0 0.5rem; }
+    .section { padding:5rem 2rem; text-align:center; }
+    .section h2 { font-size:2rem; margin-bottom:1rem; color:var(--text-dark); }
+    .cards { 
+      display: flex; 
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: nowrap;
+      margin-top: 2rem;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 3rem;
+    }
+    .card { 
+      background: #fff; 
+      padding: 2.5rem; 
+      border-radius: 12px; 
+      width: calc(33.333% - 1rem);
+      height: 280px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-content {
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+      backface-visibility: hidden;
+      text-align: center;
+    }
+    .card:hover .card-content {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .card .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 2.5rem;
+      text-align: left;
+      transform: translateY(100%);
+      z-index: 3;
+    }
+    .card:hover .card-overlay {
+      opacity: 0.98;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .card-overlay-content {
+      color: #fff;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s ease 0.1s;
+      max-width: 100%;
+      padding-top: 1rem;
+      width: 100%;
+    }
+    .card:hover .card-overlay-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .card-overlay-content h4 {
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 0.5rem;
+      color: #fff;
+      text-align: left;
+    }
+    .card-overlay-content h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--light);
+    }
+    .card-overlay-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .card-overlay-content li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.4;
+    }
+    .card-overlay-content li i {
+      font-size: 1rem;
+      color: var(--light);
+      opacity: 0.9;
+      min-width: 20px;
+      padding-top: 0.25rem;
+    }
+    .card-overlay-content li:empty,
+    .card-overlay-content li:blank {
+      display: none;
+    }
+    .card:hover .card-overlay-content li {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .card-overlay-content li:nth-child(1) { transition-delay: 0.2s; }
+    .card-overlay-content li:nth-child(2) { transition-delay: 0.3s; }
+    .card-overlay-content li:nth-child(3) { transition-delay: 0.4s; }
+    .card-overlay-content li:nth-child(4) { transition-delay: 0.5s; }
+    .card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+    .card:hover i {
+      transform: scale(1.1) rotate(5deg);
+    }
+    .card h3 {
+      font-size: 1.5rem !important;
+      font-weight: 600 !important;
+      margin-bottom: 1rem !important;
+      color: var(--text-dark);
+      position: relative;
+      z-index: 2;
+    }
+    .card p {
+      font-size: 1.1rem !important;
+      line-height: 1.6 !important;
+      color: var(--text-light);
+      position: relative;
+      z-index: 2;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .card:hover::after {
+      transform: scaleX(1);
+    }
+    .faq-item { 
+      max-width: 700px; 
+      margin: 1rem auto; 
+      text-align: left; 
+      background: #fff; 
+      padding: 1rem 1.5rem; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+    .faq-item:hover {
+      border-left-color: var(--primary);
+      background: var(--bg-light);
+      transform: translateX(5px);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    .faq-arrow {
+      margin-left: 1rem;
+      transition: transform 0.3s ease;
+      color: var(--primary);
+    }
+    .faq-item.active .faq-arrow {
+      transform: rotate(180deg);
+    }
+    .faq-answer { 
+      display: none; 
+      margin-top: 1rem;
+      color: var(--text-light);
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .faq-answer.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .contact { display:flex; justify-content:center; gap:3rem; flex-wrap:wrap; margin-top:2rem; }
+    form { display:flex; flex-direction:column; gap:1rem; width:300px; }
+    input, textarea, select { padding:0.75rem; border:1px solid var(--text-light); border-radius:6px; }
+    footer {
+      background: var(--secondary);
+      color: var(--light);
+      padding: 4rem 2rem;
+      font-size: 0.9rem;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.1;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .footer-grid > div {
+      flex: 1;
+      min-width: 200px;
+    }
+    .logo-col {
+      flex: 2;
+      min-width: 300px;
+    }
+    .footer-grid .logo-col .logo {
+      font-size: 1.5rem;
+      color: var(--light);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer-grid p {
+      margin: 0.8rem 0;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+    .footer-grid p:hover {
+      color: var(--accent);
+      cursor: pointer;
+    }
+    .socials {
+      margin-top: 1.5rem;
+    }
+    .socials a {
+      color: var(--light);
+      text-decoration: none;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+    .socials a:hover {
+      color: var(--accent);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom a {
+      color: var(--light);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    .footer-bottom a:hover {
+      color: var(--accent);
+    }
+    @media(max-width:768px){
+      header nav { display:none; }
+      .hero h1 { font-size:2rem; }
+      .cards { flex-direction:column; align-items:center; }
+      .contact { flex-direction:column; align-items:center; }
+      .footer-grid {
+        gap: 2rem;
+      }
+      .footer-grid > div {
+        flex: 100%;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+      .footer-bottom a {
+        margin: 0.5rem;
+      }
+      .card {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        min-height: 280px;
+      }
+    }
+    /* Navigation hover effects */
+    nav a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    nav a:not(.btn):hover {
+      color: var(--primary);
+    }
+    nav a:not(.btn):hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    /* Active state for navigation items */
+    nav a:not(.btn).active {
+      color: var(--primary);
+    }
+    nav a:not(.btn).active::after {
+      transform: scaleX(1);
+    }
+  </style>
+    <!-- … your existing <style>…</style> … -->
+
+  <!-- NEW: Get In Touch section styles -->
+  <style>
+    /* Section wrapper */
+    #contact {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    #contact h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    #contact > p {
+      text-align: center;
+      color: var(--text-light);
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-info {
+      padding: 2.5rem;
+      background: var(--bg-light);
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(31, 120, 114, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .contact-details strong {
+      display: block;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-details p {
+      color: var(--text-light);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .office-hours {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .office-hours strong {
+      display: block;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .office-hours p {
+      color: var(--text-light);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .contact-form {
+      padding: 2.5rem;
+      background: #fff;
+    }
+
+    .contact-form h3 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text-dark);
+      background: var(--bg-light);
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+    <!-- NEW: Footer styles -->
+    <style>
+      footer {
+        background: var(--secondary);
+        color: var(--light);
+        padding: 4rem 2rem;
+        font-size: 0.9rem;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: auto;
+      }
+      .footer-grid .logo-col .logo {
+        font-size: 1.5rem;
+        color: var(--light);
+        margin-bottom: 0.5rem;
+      }
+      .footer-grid p {
+        margin: 0.5rem 0;
+        line-height: 1.6;
+      }
+      .footer-bottom {
+        border-top: 1px solid var(--primary);
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-bottom a {
+        color: var(--light);
+        text-decoration: none;
+        margin-left: 1.5rem;
+        font-size: 0.9rem;
+      }
+      .footer-bottom a:hover {
+        color: var(--accent);
+      }
+    </style>
+  
+
+  <!-- Add decorative elements styles -->
+  <style>
+    .decorative-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.15;
+    }
+
+    .blob-1 {
+      background: var(--primary);
+      width: 300px;
+      height: 300px;
+      top: 20%;
+      right: -150px;
+      animation: float 15s infinite;
+    }
+
+    .blob-2 {
+      background: var(--accent);
+      width: 250px;
+      height: 250px;
+      bottom: 10%;
+      left: -100px;
+      animation: float 12s infinite reverse;
+    }
+
+    .dots-pattern {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background-image: radial-gradient(var(--text-light) 2px, transparent 2px);
+      background-size: 20px 20px;
+      opacity: 0.1;
+    }
+
+    .dots-1 {
+      top: 15%;
+      left: 10%;
+      animation: rotateSlow 30s linear infinite;
+    }
+
+    .dots-2 {
+      bottom: 15%;
+      right: 10%;
+      animation: rotateSlow 30s linear infinite reverse;
+    }
+
+    .line-decoration {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border: 2px dashed var(--primary);
+      opacity: 0.1;
+    }
+
+    .line-1 {
+      top: 30%;
+      right: 15%;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      animation: morphing 20s ease-in-out infinite;
+    }
+
+    .line-2 {
+      bottom: 20%;
+      left: 10%;
+      border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+      animation: morphing 20s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(10px, -10px) rotate(5deg); }
+      50% { transform: translate(0, -20px) rotate(0deg); }
+      75% { transform: translate(-10px, -10px) rotate(-5deg); }
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes morphing {
+      0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+      25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+      50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+      75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+      100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    }
+
+    /* Enhanced hover effects */
+    .card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .contact-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .contact-item:hover .contact-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+<body>
+  <!-- Add decorative shapes container at the start of body -->
+  <div class="decorative-shapes">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="dots-pattern dots-1"></div>
+    <div class="dots-pattern dots-2"></div>
+    <div class="line-decoration line-1"></div>
+    <div class="line-decoration line-2"></div>
+  </div>
+
+  <header>
+    <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact Us</a>
+      <a href="{{ url_for('choice') }}" class="btn">Get Started</a>
+
+
+    </nav>
+  </header>
+
+  <section class="hero-fixed" id="home">
+    <div class="hero-text">
+      <h1>Learn, Teach,<br><span>Exchange Skills</span></h1>
+      <p>Connect with people worldwide to exchange knowledge or find expert lessons in languages, crafts, and professional skills.</p>
+      <div class="btns">
+        <a href="{{ url_for('choice') }}" class="btn">
+          Get Started <i class="fas fa-arrow-right"></i>
+        </a>
+        
+        <a href="#about" class="btn-outline">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.pexels.com/photos/7516363/pexels-photo-7516363.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Skill Exchange">
+    </div>
+  </section>
+
+  <style>
+    .hero-fixed {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8rem 5% 4rem;
+      background: #F3F4F6;
+      gap: 2rem;
+      flex-wrap: nowrap;
+    }
+    .hero-text {
+      flex: 1;
+    }
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .hero-text h1 span {
+      color: var(--primary);
+    }
+    .hero-text p {
+      color: var(--text-light);
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      max-width: 90%;
+    }
+    .btns {
+      display: flex;
+      gap: 1rem;
+    }
+    .hero-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-image img {
+      width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    @media(max-width: 900px){
+      .hero-fixed { flex-wrap: wrap; text-align: center; }
+      .hero-text, .hero-image { flex: 100%; }
+      .hero-image img { width: 100%; margin-top: 2rem; }
+    }
+  </style>
+
+  <style>
+    @media(max-width: 900px){
+      .hero { flex-wrap:wrap; text-align:center; }
+      .hero div { flex-basis:100% !important; }
+      .hero img { width:100%; margin-top:2rem; }
+    }
+  </style>
+
+  <section class="section" id="about">
+    <h2 style="font-size:2rem; font-weight:700;">What We Offer</h2>
+    <p style="color:var(--text-light); max-width:700px; margin:1rem auto;">Skillex provides multiple ways to learn new skills, share your expertise, and connect with others in a collaborative learning environment.</p>
+    <div class="cards">
+      <div class="card" data-category="exchange">
+        <i class="fas fa-people-arrows"></i>
+        <h3>Skill Exchange</h3>
+        <p>Teach what you know and learn what you want. Exchange your skills with others without spending money.</p>
+      </div>
+      <div class="card" data-category="lessons">
+        <i class="fas fa-graduation-cap"></i>
+        <h3>Expert Lessons</h3>
+        <p>Connect with experienced instructors and take professional lessons in your area of interest.</p>
+      </div>
+      <div class="card" data-category="marketplace">
+        <i class="fas fa-store"></i>
+        <h3>Marketplace</h3>
+        <p>Browse and purchase tools, guides, and resources related to various skills and crafts.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Interactive features for What We Offer cards
+    document.querySelectorAll('.card').forEach(card => {
+      // Mouse movement effect
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 20;
+        const angleY = (centerX - x) / 20;
+        
+        card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-10px)`;
+      });
+      
+      // Reset card position on mouse leave
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+      });
+      
+      // Click effect
+      card.addEventListener('click', () => {
+        card.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          card.style.transform = 'scale(1)';
+          // Navigate to respective section based on category
+          const category = card.dataset.category;
+          if (category) {
+            window.location.href = `/${category}`;
+          }
+        }, 150);
+      });
+      
+      // Floating icon animation
+      const icon = card.querySelector('i');
+      let floatY = 0;
+      let floatDirection = 1;
+      
+      function floatIcon() {
+        floatY += 0.1 * floatDirection;
+        if (floatY > 5) floatDirection = -1;
+        if (floatY < 0) floatDirection = 1;
+        icon.style.transform = `translateY(${floatY}px)`;
+        requestAnimationFrame(floatIcon);
+      }
+      
+      floatIcon();
+    });
+  </script>
+
+  <section class="section">
+    <h2 style="font-size:2rem; font-weight:700;">Skill Categories</h2>
+    <p style="color:var(--text-light); max-width:700px; margin:1rem auto;">Explore various skill categories available for exchange or learning on our platform.</p>
+    <div class="cards">
+      <div class="card" data-category="languages">
+        <div class="card-content">
+          <i class="fas fa-language"></i>
+          <h3>Language Skills</h3>
+          <p>Learn new languages or improve your existing language skills with native speakers.</p>
+        </div>
+        <div class="card-overlay">
+          <div class="card-overlay-content">
+            <h4>Language Learning Features</h4>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> One-on-one conversation practice</li>
+              <li><i class="fas fa-check-circle"></i> Grammar and vocabulary lessons</li>
+              <li><i class="fas fa-check-circle"></i> Cultural exchange opportunities</li>
+              <li><i class="fas fa-check-circle"></i> Language exchange partnerships</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card" data-category="arts">
+        <div class="card-content">
+          <i class="fas fa-palette"></i>
+          <h3>Crafts & Arts</h3>
+          <p>Discover creative skills like painting, knitting, pottery, woodworking, and more.</p>
+        </div>
+        <div class="card-overlay">
+          <div class="card-overlay-content">
+            <h4>Creative Arts & Crafts</h4>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Hands-on workshop sessions</li>
+              <li><i class="fas fa-check-circle"></i> Material recommendations</li>
+              <li><i class="fas fa-check-circle"></i> Technique demonstrations</li>
+              <li><i class="fas fa-check-circle"></i> Project-based learning</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card" data-category="professional">
+        <div class="card-content">
+          <i class="fas fa-briefcase"></i>
+          <h3>Professional Skills</h3>
+          <p>Enhance your career with skills in programming, design, marketing, finance, and business.</p>
+        </div>
+        <div class="card-overlay">
+          <div class="card-overlay-content">
+            <h4>Professional Development</h4>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Industry-specific training</li>
+              <li><i class="fas fa-check-circle"></i> Career guidance sessions</li>
+              <li><i class="fas fa-check-circle"></i> Portfolio development</li>
+              <li><i class="fas fa-check-circle"></i> Networking opportunities</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const testimonials = [
+      {
+        name: 'Sarah Johnson',
+        role: 'Language Learner',
+        img: 'https://randomuser.me/api/portraits/women/44.jpg',
+        review: 'I exchanged my Spanish skills for French lessons. The platform made it easy to find a compatible partner, and I\'ve improved my French significantly in just a few months!'
+      },
+      {
+        name: 'Michael Chen',
+        role: 'Programming Teacher',
+        img: 'https://randomuser.me/api/portraits/men/32.jpg',
+        review: 'As a software developer, I enjoy teaching coding skills. Through Skillex, I\'ve been able to teach programming while learning digital marketing. It\'s a win-win!'
+      },
+      {
+        name: 'Emily Davis',
+        role: 'Photography Enthusiast',
+        img: 'https://randomuser.me/api/portraits/women/65.jpg',
+        review: 'Thanks to Skillex, I learned graphic design in exchange for my photography tips. The community is fantastic!'
+      }
+    ];
+
+    let index = 0;
+
+    function renderTestimonials() {
+      const container = document.getElementById('testimonial-container');
+      container.innerHTML = '';
+      for(let i = 0; i < 2; i++) {
+        const t = testimonials[(index + i) % testimonials.length];
+        container.innerHTML += `
+          <div style="background:#fff; padding:1.5rem; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.05); width:300px; text-align:left;">
+            <div style='display:flex; align-items:center; gap:1rem;'>
+              <img src='${t.img}' alt='${t.name}' style='width:50px; height:50px; border-radius:50%;'>
+              <div>
+                <strong>${t.name}</strong><br>
+                <small style='color:var(--text-light);'>${t.role}</small>
+              </div>
+            </div>
+            <div style='color:#FBBF24; margin:0.5rem 0;'>
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p style='color:var(--text-dark); font-size:0.95rem;'>${t.review}</p>
+          </div>
+        `;
+      }
+    }
+
+    function nextTestimonial() {
+      index = (index + 1) % testimonials.length;
+      renderTestimonials();
+    }
+
+    function prevTestimonial() {
+      index = (index - 1 + testimonials.length) % testimonials.length;
+      renderTestimonials();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderTestimonials);
+  </script>
+
+  <!-- How It Works Section -->
+  <section class="section" id="how-it-works" style="background: #f8fdfa; padding-bottom: 3rem;">
+    <h2 style="font-size:2rem; font-weight:700; margin-bottom:0.5rem;">How It Works</h2>
+    <p style="color:var(--text-light); max-width:700px; margin:0 auto 2.5rem; font-size:1.1rem;">Getting started with Skillex is simple. Follow these steps to begin your skill exchange journey.</p>
+    <div class="how-works-cards" style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.5rem;">
+      <div class="how-card">
+        <div class="how-badge">1</div>
+        <i class="fas fa-user-plus"></i>
+        <h3>Create an Account</h3>
+        <p>Sign up as a teacher or student based on your goals and interests.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-badge">2</div>
+        <i class="fas fa-search"></i>
+        <h3>Find Skills</h3>
+        <p>Browse available skills or search for specific skills you want to learn.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-badge">3</div>
+        <i class="fas fa-user-check"></i>
+        <h3>Connect & Agree</h3>
+        <p>Connect with teachers or students and agree on exchange terms or payment.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-badge">4</div>
+        <i class="fas fa-book-open"></i>
+        <h3>Start Learning</h3>
+        <p>Schedule sessions and start learning or teaching through our platform.</p>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="#success-stories" class="btn btn-outline" id="see-success-btn">See Success Stories</a>
+    </div>
+  </section>
+
+  <style>
+    .how-works-cards { flex-wrap: wrap; }
+    .how-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      padding: 2rem 1.5rem 2.5rem;
+      width: 260px;
+      min-height: 260px;
+      text-align: left;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .how-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px) scale(1.03);
+    }
+    .how-card i {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      margin-top: 0.5rem;
+    }
+    .how-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+    .how-card p {
+      color: var(--text-light);
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+    .how-badge {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      background: var(--primary);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(31,120,114,0.08);
+      border: 3px solid #fff;
+      z-index: 2;
+    }
+    @media (max-width: 1100px) {
+      .how-works-cards { flex-wrap: wrap; gap: 1.5rem; }
+      .how-card { width: 100%; max-width: 350px; margin: 0 auto; }
+    }
+    @media (max-width: 700px) {
+      .how-works-cards { flex-direction: column; align-items: center; }
+      .how-card { width: 100%; max-width: 350px; }
+    }
+  </style>
+
+  <!-- Success Stories Section -->
+  <section class="section" id="success-stories" style="background: #fff; padding-bottom: 3rem;">
+    <h2 style="font-size:2rem; font-weight:700; margin-bottom:0.5rem;">Success Stories</h2>
+    <p style="color:var(--text-light); max-width:700px; margin:0 auto 2.5rem; font-size:1.1rem;">Hear from our users who have successfully exchanged skills and improved their lives through Skillex.</p>
+    <div style="display:flex; justify-content:center; align-items:center; gap:1.5rem; margin-bottom:2rem;">
+      <button class="arrow-btn" id="prev-review" aria-label="Previous Review"><i class="fas fa-chevron-left"></i></button>
+      <div id="review-cards" style="display:flex; gap:2rem;"></div>
+      <button class="arrow-btn" id="next-review" aria-label="Next Review"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </section>
+  <style>
+    .arrow-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+    .arrow-btn:hover {
+      background: var(--secondary);
+      transform: scale(1.08);
+    }
+    .review-card {
+      background: #f8fdfa;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      padding: 2rem 1.5rem;
+      width: 320px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .review-card .review-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .review-card img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+    .review-card .review-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .review-card .review-name {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 1.08rem;
+    }
+    .review-card .review-role {
+      color: var(--text-light);
+      font-size: 0.98rem;
+    }
+    .review-card .review-stars {
+      color: #FBBF24;
+      margin: 0.2rem 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .review-card .review-text {
+      color: var(--text-dark);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    @media (max-width: 900px) {
+      #review-cards { flex-direction: column; align-items: center; gap: 1.5rem; }
+      .review-card { width: 100%; max-width: 350px; }
+    }
+  </style>
+  <script>
+    // Reviews data
+    const reviews = [
+      {
+        name: 'Sarah Johnson',
+        role: 'Language Learner',
+        img: 'https://randomuser.me/api/portraits/women/44.jpg',
+        text: 'I exchanged my Spanish skills for French lessons. The platform made it easy to find a compatible partner, and I\'ve improved my French significantly in just a few months!'
+      },
+      {
+        name: 'Michael Chen',
+        role: 'Programming Teacher',
+        img: 'https://randomuser.me/api/portraits/men/32.jpg',
+        text: 'As a software developer, I enjoy teaching coding skills. Through Skillex, I\'ve been able to teach programming while learning digital marketing. It\'s a win-win!'
+      },
+      {
+        name: 'Emily Davis',
+        role: 'Photography Enthusiast',
+        img: 'https://randomuser.me/api/portraits/women/65.jpg',
+        text: 'Thanks to Skillex, I learned graphic design in exchange for my photography tips. The community is fantastic!'
+      }
+    ];
+    let reviewIndex = 0;
+    function renderReviews() {
+      const container = document.getElementById('review-cards');
+      container.innerHTML = '';
+      for (let i = 0; i < 2; i++) {
+        const r = reviews[(reviewIndex + i) % reviews.length];
+        container.innerHTML += `
+          <div class="review-card">
+            <div class="review-header">
+              <img src="${r.img}" alt="${r.name}">
+              <div class="review-info">
+                <span class="review-name">${r.name}</span>
+                <span class="review-role">${r.role}</span>
+                <div class="review-stars">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+            <div class="review-text">${r.text}</div>
+          </div>
+        `;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', renderReviews);
+    document.getElementById('next-review').onclick = function() {
+      reviewIndex = (reviewIndex + 1) % reviews.length;
+      renderReviews();
+    };
+    document.getElementById('prev-review').onclick = function() {
+      reviewIndex = (reviewIndex - 1 + reviews.length) % reviews.length;
+      renderReviews();
+    };
+    // Smooth scroll for See Success Stories button
+    document.getElementById('see-success-btn').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('success-stories').scrollIntoView({ behavior: 'smooth' });
+    };
+  </script>
+
+  <section class="section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <p style="color:var(--text-light); margin-bottom:2rem;">Find answers to common questions about Skillex and how our platform works.</p>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        How does skill exchange work?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">Skill exchange on Skillex allows users to connect and trade knowledge directly. Simply find a partner, agree on terms, and start learning!</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        Is skill exchange completely free?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">Yes, basic skill exchanges are free. However, some expert lessons or resources in the marketplace may have a fee.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        How do I know if a teacher is qualified?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">Each teacher has a profile with reviews, ratings, and verified credentials where applicable. Always check profiles before starting.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        Can I exchange skills remotely?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">Absolutely! Skillex supports both in-person and remote exchanges through video calls and messaging.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        What if I'm not satisfied with an exchange?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">If you're not satisfied, you can leave a review and report any issues. Our team will assist in resolving disputes when necessary.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-question">
+        What skills can I learn or teach on Skillex?
+        <i class="fas fa-chevron-down faq-arrow"></i>
+      </div>
+      <div class="faq-answer">You can exchange a wide range of skills including languages, arts, crafts, professional skills, and more. Explore categories to see what's available.</div>
+    </div>
+    
+    <p style="margin-top:2rem; text-align:center; color:var(--text-light);">Still have questions?</p>
+    <div style="text-align:center; margin-top:1rem;">
+      <a href="#contact" class="btn">Contact Us</a>
+    </div>
+  </section>
+  
+
+  <section id="contact">
+    <h2>Get In Touch</h2>
+    <p>Have questions about Skillex? We're here to help. Reach out to our team for support.</p>
+    
+    <div class="contact-container">
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="contact-details">
+            <strong>Email</strong>
+            <p>contact@skillex.com<br>support@skillex.com</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="contact-details">
+            <strong>Phone</strong>
+            <p>+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="contact-details">
+            <strong>Address</strong>
+            <p>123 Skill Street<br>Knowledge City, SK 12345</p>
+          </div>
+        </div>
+
+        <div class="office-hours">
+          <strong>Office Hours</strong>
+          <p>
+            Monday - Friday: 9:00 AM - 6:00 PM<br>
+            Saturday: 10:00 AM - 4:00 PM<br>
+            Sunday: Closed
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h3>Send Us a Message</h3>
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <input type="text" id="name" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <input type="email" id="email" placeholder="Your Email">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <input type="text" id="subject" placeholder="Subject">
+          </div>
+          
+          <div class="form-group">
+            <textarea id="message" placeholder="Your Message"></textarea>
+          </div>
+          
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <!-- Column 1: Logo & Socials -->
+      <div class="logo-col">
+        <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+        <p>Connecting people through shared knowledge and skill exchange.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+  
+      <!-- Column 2: Quick Links -->
+      <div>
+        <p>Home</p>
+        <p>About Us</p>
+        <p>Services</p>
+        <p>FAQ</p>
+        <p>Sign Up</p>
+      </div>
+  
+      <!-- Column 3: Categories -->
+      <div>
+        <p>Language Learning</p>
+        <p>Crafts & DIY</p>
+        <p>Programming</p>
+        <p>Cooking</p>
+        <p>Business Skills</p>
+      </div>
+  
+      <!-- Column 4: Contact Details -->
+      <div>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+      </div>
+    </div>
+  
+    <div class="footer-bottom">
+      <span>© 2025 Skillex. All rights reserved.</span>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.querySelector('.faq-answer');
+        const isActive = item.classList.contains('active');
+        
+        // First remove active class from all items
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+            const otherAnswer = otherItem.querySelector('.faq-answer');
+            otherAnswer.classList.remove('show');
+            setTimeout(() => {
+              otherAnswer.style.display = 'none';
+            }, 300);
+          }
+        });
+        
+        // Toggle current item
+        if (!isActive) {
+          item.classList.add('active');
+          answer.style.display = 'block';
+          setTimeout(() => {
+            answer.classList.add('show');
+          }, 10);
+        } else {
+          item.classList.remove('active');
+          answer.classList.remove('show');
+          setTimeout(() => {
+            answer.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  </script>
+
+  <!-- Add animation scripts before closing body tag -->
+  <script>
+    // Fade in elements on scroll
+    const fadeElements = document.querySelectorAll('section');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    fadeElements.forEach(element => {
+      element.classList.add('fade-in');
+      observer.observe(element);
+    });
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Enhanced hover animations for contact icons
+    document.querySelectorAll('.contact-icon').forEach(icon => {
+      icon.addEventListener('mouseover', () => {
+        icon.style.transform = 'scale(1.1) rotate(5deg)';
+      });
+      
+      icon.addEventListener('mouseout', () => {
+        icon.style.transform = 'scale(1) rotate(0)';
+      });
+    });
+
+    // Update active state based on scroll position
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('nav a:not(.btn)');
+      
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= sectionTop - 60) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+

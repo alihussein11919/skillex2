@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillex - Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1F7872;
+      --secondary: #1A202C;
+      --accent: #D13F31;
+      --success: #72B095;
+      --light: #DEDBA7;
+      --text-dark: #1A202C;
+      --text-light: #72B095;
+      --bg-light: #F9FAFB;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+    
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 100px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .logo:hover {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--secondary);
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    nav .btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+    }
+
+    nav .btn:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    nav .btn i {
+      font-size: 1.1em;
+    }
+
+    /* Marketplace Styles */
+    .marketplace {
+      padding: 6rem 5% 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .marketplace-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .marketplace-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Filters Section */
+    .filters {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-group {
+      position: relative;
+    }
+
+    .filter-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231F7872' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 1rem) center;
+      padding-right: 2.5rem;
+    }
+
+    .filter-select:hover {
+      border-color: var(--primary);
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(31, 120, 114, 0.1);
+    }
+
+    .search-bar {
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.8rem 1rem 0.8rem 2.8rem;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(31, 120, 114, 0.1);
+    }
+
+    .search-bar i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-category {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(31, 120, 114, 0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 0.8rem;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+
+    .product-description {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .add-to-cart {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .add-to-cart:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    /* Cart Counter */
+    .cart-counter {
+      position: relative;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+
+    .cart-counter i {
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      transition: color 0.3s ease;
+    }
+
+    .cart-counter:hover i {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Footer Styles */
+    footer {
+      background: var(--secondary);
+      color: #fff;
+      padding: 4rem 5% 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 3rem;
+    }
+
+    .footer-grid .logo-col {
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .footer-grid .logo-col p {
+      margin: 1rem 0;
+      opacity: 0.8;
+    }
+
+    .footer-grid > div:not(.logo-col) {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-grid p {
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .footer-grid p:hover {
+      color: var(--primary);
+    }
+
+    .footer-grid i {
+      margin-right: 0.5rem;
+    }
+
+    .socials {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .socials a {
+      color: #fff;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .socials a:hover {
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+    }
+
+    .footer-bottom span {
+      opacity: 0.8;
+    }
+
+    .footer-bottom div {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-bottom a {
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .footer-bottom a:hover {
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .marketplace-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        gap: 2rem;
+      }
+
+      .footer-grid .logo-col,
+      .footer-grid > div:not(.logo-col) {
+        flex: 100%;
+        min-width: 100%;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-bottom div {
+        justify-content: center;
+      }
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .user-profile:hover {
+      background: var(--bg-light);
+    }
+
+    .user-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-profile span {
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/student-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+    <nav>
+      <a href="/student-home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact Us</a>
+      <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+      <div class="user-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+        <span>John Doe</span>
+      </div>
+    </nav>
+    <div class="cart-counter">
+      <a href="/cart" style="text-decoration: none; color: inherit;">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="marketplace">
+    <div class="marketplace-header">
+      <h1 class="marketplace-title">Discover Amazing Products</h1>
+    </div>
+
+    <div class="filters">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search products...">
+      </div>
+      
+      <div class="filter-group">
+        <label>Category</label>
+        <select class="filter-select">
+          <option value="">All Categories</option>
+          <option value="books">Books</option>
+          <option value="courses">Courses</option>
+          <option value="tools">Tools</option>
+          <option value="software">Software</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Price Range</label>
+        <select class="filter-select">
+          <option value="">All Prices</option>
+          <option value="0-25">$0 - $25</option>
+          <option value="25-50">$25 - $50</option>
+          <option value="50-100">$50 - $100</option>
+          <option value="100+">$100+</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select class="filter-select">
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="popular">Most Popular</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-grid">
+      <!-- Sample Product Cards -->
+      <div class="product-card">
+        <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg" alt="Product" class="product-image">
+        <div class="product-info">
+          <div class="product-category">Course</div>
+          <h3 class="product-title">Web Development Masterclass</h3>
+          <p class="product-description">Complete guide to modern web development with practical projects and exercises.</p>
+          <div class="product-footer">
+            <div class="product-price">$49.99</div>
+            <button class="add-to-cart">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg" alt="Product" class="product-image">
+        <div class="product-info">
+          <div class="product-category">Book</div>
+          <h3 class="product-title">Python Programming Guide</h3>
+          <p class="product-description">Comprehensive guide to Python programming with real-world examples.</p>
+          <div class="product-footer">
+            <div class="product-price">$29.99</div>
+            <button class="add-to-cart">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg" alt="Product" class="product-image">
+        <div class="product-info">
+          <div class="product-category">Software</div>
+          <h3 class="product-title">Design Tools Bundle</h3>
+          <p class="product-description">Collection of essential design tools and resources for creative professionals.</p>
+          <div class="product-footer">
+            <div class="product-price">$79.99</div>
+            <button class="add-to-cart">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="logo-col">
+        <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+        <p>Connecting people through shared knowledge and skill exchange.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <p>Home</p>
+        <p>About Us</p>
+        <p>Services</p>
+        <p>FAQ</p>
+        <p>Sign Up</p>
+      </div>
+      <div>
+        <p>Language Learning</p>
+        <p>Crafts & DIY</p>
+        <p>Programming</p>
+        <p>Cooking</p>
+        <p>Business Skills</p>
+      </div>
+      <div>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Skillex. All rights reserved.</span>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Cart functionality
+    const cartCount = document.querySelector('.cart-count');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    let count = 0;
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        count++;
+        cartCount.textContent = count;
+        button.innerHTML = '<i class="fas fa-check"></i> Added';
+        button.style.background = 'var(--success)';
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-shopping-cart"></i> Add to Cart';
+          button.style.background = 'var(--primary)';
+        }, 2000);
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('.search-bar input');
+    const productCards = document.querySelectorAll('.product-card');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      productCards.forEach(card => {
+        const title = card.querySelector('.product-title').textContent.toLowerCase();
+        const description = card.querySelector('.product-description').textContent.toLowerCase();
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

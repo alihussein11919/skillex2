@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+        
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo { 
+            font-weight:700; 
+            color:var(--primary); 
+            font-size:1.8rem; 
+            display:flex; 
+            align-items:center; 
+            gap:0.5rem;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary); }
+        .btn { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .btn:hover { 
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid var(--primary);
+        }
+
+        .profile-header h2 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-header p {
+            color: var(--text-light);
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        .stat-item h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* Student List */
+        .student-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .student-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .student-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-info h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .student-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .student-progress {
+            text-align: right;
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+        }
+
+        /* Skill Badge Styles */
+        .skill-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            display: inline-block;
+        }
+        
+        .skill-badge.beginner {
+            background-color: #3498db;
+        }
+        
+        .skill-badge.intermediate {
+            background-color: #f39c12;
+        }
+        
+        .skill-badge.advanced {
+            background-color: #e74c3c;
+        }
+
+        /* Lesson Cards */
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lesson-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .lesson-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media(max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .profile-section {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .lesson-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+        .footer-grid .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .footer-grid p:hover {
+            color: var(--accent);
+        }
+        .socials {
+            margin-top: 1.5rem;
+        }
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        @media(max-width: 768px) {
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(31, 120, 114, 0.1);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #ddd;
+            background: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            color: var(--text-light);
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/teacher-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-profile">
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <h2>{{ user.username }}</h2>
+                <p>Professional Language Teacher</p>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <h3>24</h3>
+                    <p>Active Students</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.9</h3>
+                    <p>Rating</p>
+                </div>
+                <div class="stat-item">
+                    <h3>156</h3>
+                    <p>Hours Taught</p>
+                </div>
+                <div class="stat-item">
+                    <h3>12</h3>
+                    <p>Courses</p>
+                </div>
+            </div>
+            <button class="btn create-lesson-btn" style="width: 100%;">
+                <i class="fas fa-plus-circle"></i>
+                Create New Lesson
+            </button>
+        </div>
+
+        <!-- Create Lesson Modal -->
+        <div id="createLessonModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Create New Lesson</h2>
+                <form method="POST" action="{{ url_for('create_lesson') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <label for="title">Lesson Type/Skill</label>
+                        <select id="skill_id" name="skill_id" class="form-control">
+                            <option value="">General Lesson</option>
+                            {% for group_label, options in grouped_skills %}
+                                <optgroup label="{{ group_label }}">
+                                    {% for value, label in options %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduled_time">Scheduled Time</label>
+                        <input type="datetime-local" id="scheduled_time" name="scheduled_time" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes)</label>
+                        <input type="number" id="duration" name="duration" class="form-control" min="15" max="180" value="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price ($)</label>
+                        <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" value="0.00">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Create Lesson</button>
+                        <button type="button" class="btn-cancel" id="cancelLessonCreate">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Current Students Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Current Students</h2>
+                    <button class="btn btn-outline">View All</button>
+                </div>
+                <div class="student-list">
+                    {% for student in students %}
+                    <div class="student-card">
+                        <div class="student-info">
+                            <h3>{{ student.username }}</h3>
+                            <p>{{ student.skill_level|capitalize }} {{ student.primary_skill|capitalize }}</p>
+                        </div>
+                        <div class="student-progress">
+                            <span class="skill-badge {{ student.skill_level }}">{{ student.skill_level|capitalize }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Active Lessons Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> Active Lessons</h2>
+                    <button class="btn btn-outline">Manage All</button>
+                </div>
+                <div class="lesson-grid">
+                    {% if lessons %}
+                        {% for lesson in lessons %}
+                        <div class="lesson-card">
+                            <h3><i class="fas fa-language"></i> {{ lesson.skill_name }}</h3>
+                            <div class="lesson-meta">
+                                <span><i class="fas fa-users"></i> {% if lesson.student_id %}1 Student{% else %}No Students Yet{% endif %}</span>
+                                <span><i class="fas fa-clock"></i> {{ lesson.duration_minutes }} min</span>
+                                <span><i class="fas fa-calendar"></i> {{ lesson.scheduled_time.strftime('%Y-%m-%d %H:%M') }}</span>
+                            </div>
+                            <div class="lesson-actions">
+                                <button class="btn btn-outline">Edit</button>
+                                <button class="btn">View Details</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <p>No lessons created yet. Click "Create New Lesson" to get started.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Performance Metrics Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Performance Metrics</h2>
+                    <button class="btn btn-outline">Download Report</button>
+                </div>
+                <div class="lesson-grid">
+                    <div class="lesson-card">
+                        <h3><i class="fas fa-star"></i> Student Satisfaction</h3>
+                        <div class="lesson-meta">
+                            <span>4.9/5.0 Average Rating</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 98%"></div>
+                        </div>
+                    </div>
+                    <div class="lesson-card">
+                        <h3><i class="fas fa-clock"></i> Completion Rate</h3>
+                        <div class="lesson-meta">
+                            <span>92% Course Completion</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%"></div>
+                        </div>
+                    </div>
+                    <div class="lesson-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Student Progress</h3>
+                        <div class="lesson-meta">
+                            <span>85% Average Progress</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+    
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+    
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal handling
+            const createLessonModal = document.getElementById('createLessonModal');
+            const createLessonBtn = document.querySelector('.create-lesson-btn');
+            const closeModalBtn = createLessonModal.querySelector('.close-modal');
+            const cancelBtn = document.getElementById('cancelLessonCreate');
+            
+            // Open modal
+            createLessonBtn.addEventListener('click', function() {
+                createLessonModal.style.display = 'block';
+            });
+            
+            // Close modal with X button
+            closeModalBtn.addEventListener('click', function() {
+                createLessonModal.style.display = 'none';
+            });
+            
+            // Close modal with Cancel button
+            cancelBtn.addEventListener('click', function() {
+                createLessonModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === createLessonModal) {
+                    createLessonModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

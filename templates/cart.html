@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillex - Shopping Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1F7872;
+      --secondary: #1A202C;
+      --accent: #D13F31;
+      --success: #72B095;
+      --light: #DEDBA7;
+      --text-dark: #1A202C;
+      --text-light: #72B095;
+      --bg-light: #F9FAFB;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+    
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 100px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .logo:hover {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--secondary);
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    nav .btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+    }
+
+    nav .btn:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Cart Counter */
+    .cart-counter {
+      position: relative;
+      margin-left: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .cart-counter i {
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      transition: color 0.3s ease;
+    }
+
+    .cart-counter:hover i {
+      color: var(--primary);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Cart Page Styles */
+    .cart-page {
+      padding: 6rem 5% 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cart-header {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    .cart-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cart-items {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 2fr 1fr 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .item-details h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-category {
+      font-size: 0.8rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(31, 120, 114, 0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .item-price {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .quantity-btn {
+      background: var(--bg-light);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quantity-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .quantity {
+      font-weight: 600;
+    }
+
+    .remove-btn {
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .cart-summary {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .checkout-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .checkout-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .empty-cart i {
+      font-size: 4rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .empty-cart h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+    }
+
+    .empty-cart p {
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    .continue-shopping {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .continue-shopping:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: 1rem;
+      }
+
+      .item-price, .quantity-controls {
+        grid-column: 2;
+      }
+
+      .remove-btn {
+        grid-column: 2;
+        justify-self: end;
+      }
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      height: 40px;
+    }
+
+    .user-profile img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+
+    .user-profile span {
+      color: var(--text-dark);
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/student-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+    <nav>
+      <a href="/student-home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact Us</a>
+      <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+      <div class="user-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+        <span>John Doe</span>
+      </div>
+    </nav>
+    <div class="cart-counter">
+      <a href="/cart" style="text-decoration: none; color: inherit;">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="cart-page">
+    <div class="cart-header">
+      <h1 class="cart-title">Shopping Cart</h1>
+    </div>
+
+    <div class="cart-items">
+      <!-- Sample Cart Items -->
+      <div class="cart-item">
+        <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg" alt="Product" class="item-image">
+        <div class="item-details">
+          <h3>Web Development Masterclass</h3>
+          <span class="item-category">Course</span>
+        </div>
+        <div class="item-price">$49.99</div>
+        <div class="quantity-controls">
+          <button class="quantity-btn">-</button>
+          <span class="quantity">1</span>
+          <button class="quantity-btn">+</button>
+        </div>
+        <button class="remove-btn"><i class="fas fa-trash"></i></button>
+      </div>
+
+      <div class="cart-item">
+        <img src="https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg" alt="Product" class="item-image">
+        <div class="item-details">
+          <h3>Python Programming Guide</h3>
+          <span class="item-category">Book</span>
+        </div>
+        <div class="item-price">$29.99</div>
+        <div class="quantity-controls">
+          <button class="quantity-btn">-</button>
+          <span class="quantity">1</span>
+          <button class="quantity-btn">+</button>
+        </div>
+        <button class="remove-btn"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span>$79.98</span>
+      </div>
+      <div class="summary-row">
+        <span>Tax (10%)</span>
+        <span>$8.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>$87.98</span>
+      </div>
+      <a href="/payment" class="checkout-btn">
+        <i class="fas fa-lock"></i>
+        Proceed to Checkout
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Quantity controls
+    const quantityBtns = document.querySelectorAll('.quantity-btn');
+    quantityBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const quantityElement = btn.parentElement.querySelector('.quantity');
+        let quantity = parseInt(quantityElement.textContent);
+        
+        if (btn.textContent === '+') {
+          quantity++;
+        } else if (quantity > 1) {
+          quantity--;
+        }
+        
+        quantityElement.textContent = quantity;
+        updateCartTotal();
+      });
+    });
+
+    // Remove items
+    const removeBtns = document.querySelectorAll('.remove-btn');
+    removeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cartItem = btn.closest('.cart-item');
+        cartItem.remove();
+        updateCartTotal();
+      });
+    });
+
+    // Update cart total
+    function updateCartTotal() {
+      const items = document.querySelectorAll('.cart-item');
+      let subtotal = 0;
+
+      items.forEach(item => {
+        const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
+        const quantity = parseInt(item.querySelector('.quantity').textContent);
+        subtotal += price * quantity;
+      });
+
+      const tax = subtotal * 0.1;
+      const total = subtotal + tax;
+
+      document.querySelector('.summary-row:nth-child(1) span:last-child').textContent = `$${subtotal.toFixed(2)}`;
+      document.querySelector('.summary-row:nth-child(2) span:last-child').textContent = `$${tax.toFixed(2)}`;
+      document.querySelector('.summary-row.total span:last-child').textContent = `$${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html> 

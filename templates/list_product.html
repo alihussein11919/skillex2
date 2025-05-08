@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillex - List Your Product</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1F7872;
+      --secondary: #1A202C;
+      --accent: #D13F31;
+      --success: #72B095;
+      --light: #DEDBA7;
+      --text-dark: #1A202C;
+      --text-light: #72B095;
+      --bg-light: #F9FAFB;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+    
+    /* Header Styles */
+    header { 
+      position:fixed; 
+      top:0; 
+      width:100%; 
+      background:#fff; 
+      box-shadow:0 2px 4px rgba(0,0,0,0.05); 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      padding:1rem 3%; 
+      z-index:1000; 
+    }
+    .logo { 
+      font-weight:700; 
+      color:var(--primary); 
+      font-size:1.8rem; 
+      display:flex; 
+      align-items:center; 
+      gap:0.5rem;
+      text-decoration: none;
+    }
+    nav a { 
+      margin: 0 1rem; 
+      text-decoration:none; 
+      color:var(--text-dark); 
+      font-weight:500; 
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Form Styles */
+    .list-product {
+      padding: 8rem 5% 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .form-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .form-subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    .product-form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text-dark);
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(31, 120, 114, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .image-upload {
+      border: 2px dashed #E5E7EB;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .image-upload:hover {
+      border-color: var(--primary);
+      background: rgba(31, 120, 114, 0.05);
+    }
+
+    .image-upload i {
+      font-size: 2rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .image-upload p {
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .image-upload span {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .submit-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .form-note {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 768px) {
+      .list-product {
+        padding-top: 6rem;
+      }
+      
+      .product-form {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Footer Styles */
+    footer {
+      background: var(--secondary);
+      color: #fff;
+      padding: 4rem 5% 2rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 3rem;
+    }
+
+    .footer-grid .logo-col {
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .footer-grid .logo-col p {
+      margin: 1rem 0;
+      opacity: 0.8;
+    }
+
+    .footer-grid > div:not(.logo-col) {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-grid p {
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .footer-grid p:hover {
+      color: var(--primary);
+    }
+
+    .footer-grid i {
+      margin-right: 0.5rem;
+    }
+
+    .socials {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .socials a {
+      color: #fff;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .socials a:hover {
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+    }
+
+    .footer-bottom span {
+      opacity: 0.8;
+    }
+
+    .footer-bottom div {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-bottom a {
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .footer-bottom a:hover {
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .list-product {
+        padding-top: 6rem;
+      }
+      
+      .product-form {
+        padding: 1.5rem;
+      }
+
+      .footer-grid {
+        gap: 2rem;
+      }
+
+      .footer-grid .logo-col,
+      .footer-grid > div:not(.logo-col) {
+        flex: 100%;
+        min-width: 100%;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-bottom div {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About Us</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contact">Contact Us</a>
+      <a href="/marketplace" class="btn">View Marketplace</a>
+    </nav>
+  </header>
+
+  <main class="list-product">
+    <div class="form-header">
+      <h1 class="form-title">List Your Product</h1>
+      <p class="form-subtitle">Share your knowledge and skills with the community</p>
+    </div>
+
+    <form class="product-form">
+      <div class="form-group">
+        <label for="product-name">Product Name</label>
+        <input type="text" id="product-name" placeholder="Enter product name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="">Select a category</option>
+          <option value="books">Books</option>
+          <option value="courses">Courses</option>
+          <option value="tools">Tools</option>
+          <option value="software">Software</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price ($)</label>
+        <input type="number" id="price" min="0" step="0.01" placeholder="Enter price" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Describe your product in detail" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Product Image</label>
+        <div class="image-upload">
+          <input type="file" id="image" accept="image/*" style="display: none;" required>
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Drag and drop your image here</p>
+          <span>or click to browse</span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-plus"></i>
+        List Product
+      </button>
+
+      <p class="form-note">
+        By listing your product, you agree to our Terms of Service and Seller Guidelines
+      </p>
+    </form>
+  </main>
+
+  <!-- Footer (Same as landing page) -->
+  <footer>
+    <div class="footer-grid">
+      <div class="logo-col">
+        <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+        <p>Connecting people through shared knowledge and skill exchange.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <p>Home</p>
+        <p>About Us</p>
+        <p>Services</p>
+        <p>FAQ</p>
+        <p>Sign Up</p>
+      </div>
+      <div>
+        <p>Language Learning</p>
+        <p>Crafts & DIY</p>
+        <p>Programming</p>
+        <p>Cooking</p>
+        <p>Business Skills</p>
+      </div>
+      <div>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Skillex. All rights reserved.</span>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Image upload preview
+    const imageUpload = document.querySelector('.image-upload');
+    const fileInput = document.querySelector('#image');
+
+    imageUpload.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    imageUpload.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      imageUpload.style.borderColor = 'var(--primary)';
+      imageUpload.style.background = 'rgba(31, 120, 114, 0.05)';
+    });
+
+    imageUpload.addEventListener('dragleave', () => {
+      imageUpload.style.borderColor = '#E5E7EB';
+      imageUpload.style.background = 'transparent';
+    });
+
+    imageUpload.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        fileInput.files = e.dataTransfer.files;
+        showPreview(file);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        showPreview(file);
+      }
+    });
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageUpload.innerHTML = `
+          <img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 4px;">
+          <p style="margin-top: 1rem;">Click or drag to change image</p>
+        `;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Form submission
+    const form = document.querySelector('.product-form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      // Here you would typically send the form data to your server
+      alert('Product submitted successfully!');
+      form.reset();
+      imageUpload.innerHTML = `
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>Drag and drop your image here</p>
+        <span>or click to browse</span>
+      `;
+    });
+  </script>
+</body>
+</html> 

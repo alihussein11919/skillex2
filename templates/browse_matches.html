@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Matches - Skillex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+.dropdown-menu {
+  display: none;                /* hidden by default */
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  background: #fff;
+  box-shadow: var(--shadow-md);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 160px;
+  z-index: 1001;
+
+  flex-direction: column;      /* keep flex layout when shown */
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+
+.user-btn .username {
+      font-size: 1.2rem;   /* change to whatever you like */
+      font-weight: 500;
+    }
+
+/* size and color the user icon */
+.user-icon {
+  font-size: 1.5rem;           /* match your avatar size */
+  color: #1F7872;      /* or another variable you prefer */
+}
+        :root {
+            --primary: #1F7872;
+            --secondary: #1A202C;
+            --accent: #D13F31;
+            --success: #72B095;
+            --light: #DEDBA7;
+            --text-dark: #1A202C;
+            --text-light: #72B095;
+            --bg-light: #F9FAFB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--success));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--primary));
+            --gradient-light: linear-gradient(135deg, var(--light), var(--success));
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(26, 32, 44, 0.1);
+            --shadow-md: 0 4px 6px rgba(26, 32, 44, 0.1);
+            --shadow-lg: 0 10px 15px rgba(26, 32, 44, 0.1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Poppins', sans-serif; color:var(--text-dark); background:var(--bg-light); }
+        
+        /* Navigation Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3%;
+            z-index: 1000;
+        }
+        .logo {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: var(--primary);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .main-content h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .main-content > p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        .forms-container {
+            display: block;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .form-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .form-card h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .form-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(31, 120, 114, 0.1);
+        }
+        .find-match-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 2rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        .find-match-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .redirect-note {
+            text-align: center;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 4rem;
+        }
+        .redirect-note p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        .redirect-note a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .redirect-note a:hover {
+            color: var(--accent);
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 2rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DEDBA7' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .footer-grid > div {
+            flex: 1;
+            min-width: 200px;
+        }
+        .logo-col {
+            flex: 2;
+            min-width: 300px;
+        }
+        .footer-grid .logo-col .logo {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-grid p {
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+        .footer-grid p:hover {
+            color: var(--accent);
+            cursor: pointer;
+        }
+        .socials {
+            margin-top: 1.5rem;
+        }
+        .socials a {
+            color: var(--light);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        .socials a:hover {
+            color: var(--accent);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-bottom a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        /* Decorative Shapes */
+        .shape {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .shape-1 {
+            top: 120px;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            background: var(--gradient-primary);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: morphing 15s ease-in-out infinite;
+        }
+        .shape-2 {
+            bottom: 10%;
+            left: 5%;
+            width: 180px;
+            height: 180px;
+            background: var(--gradient-accent);
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morphing 18s ease-in-out infinite reverse;
+        }
+        .shape-3 {
+            top: 40%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-light);
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            animation: morphing 20s ease-in-out infinite;
+        }
+
+        /* Illustrations */
+        .illustration {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .illustration-1 {
+            top: 200px;
+            right: 10%;
+            font-size: 4rem;
+            color: var(--primary);
+            animation: float 6s ease-in-out infinite;
+        }
+        .illustration-2 {
+            bottom: 20%;
+            left: 10%;
+            font-size: 3.5rem;
+            color: var(--accent);
+            animation: float 8s ease-in-out infinite;
+        }
+        .illustration-3 {
+            top: 50%;
+            right: 15%;
+            font-size: 3rem;
+            color: var(--success);
+            animation: float 7s ease-in-out infinite;
+        }
+
+        @keyframes morphing {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @media(max-width:768px) {
+            .forms-container {
+                grid-template-columns: 1fr;
+            }
+            nav { display: none; }
+            .footer-grid {
+                gap: 2rem;
+            }
+            .footer-grid > div {
+                flex: 100%;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom a {
+                margin: 0.5rem;
+            }
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .match-info {
+            padding: 1rem;
+        }
+        .match-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .match-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .match-details h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .match-details p {
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        .match-skills {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .match-skills h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .match-skills p {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        .match-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <a href="/student-home" class="logo"><i class="fas fa-briefcase"></i> Skillex</a>
+        <nav>
+            <a href="/student-home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact Us</a>
+            <a href="/marketplace" class="btn"><i class="fas fa-store"></i> View Marketplace</a>
+            <div class="user-dropdown">
+                <button class="user-btn">
+                  <i class="fas fa-user-circle user-icon"></i>
+                  <span class="username">{{ user_name }}</span>
+                  <i class="fas fa-caret-down caret"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a href="{{ url_for('student_home') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                  </a>
+                  <a href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                  </a>
+                </div>
+              </div>
+              
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Decorative Shapes -->
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+
+        <!-- Illustrations -->
+        <div class="illustration illustration-1">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="illustration illustration-2">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+        <div class="illustration illustration-3">
+            <i class="fas fa-handshake"></i>
+        </div>
+
+        <h1>Find Your Perfect Match</h1>
+        <p>Fill out this form to find someone who matches your preferences</p>
+
+        <div class="forms-container">
+            <!-- Match Preferences Form -->
+            <div class="form-card" style="max-width: 600px; margin: 0 auto;">
+                <h2>Match Preferences</h2>
+                <form method="POST" action="{{ url_for('browse_matches') }}">
+                    {{ form.hidden_tag() }}
+                  
+                    <div class="form-group">
+                      {{ form.preferred_age.label }}
+                      {{ form.preferred_age(class="form-control") }}
+                    </div>
+                  
+                    <div class="form-group">
+                      {{ form.preferred_gender.label }}
+                      {{ form.preferred_gender(class="form-control") }}
+                    </div>
+                  
+                    <div class="form-group">
+                        {{ form.skill_to_learn.label }}
+                        <select
+                          id="{{ form.skill_to_learn.id }}"
+                          name="{{ form.skill_to_learn.name }}"
+                          class="form-control"
+                          aria-label="Skill Looking to Learn"
+                        >
+                          {% for group_label, options in grouped_skills %}
+                            <optgroup label="{{ group_label }}">
+                              {% for value, label in options %}
+                                <option value="{{ value }}"
+                                  {% if form.skill_to_learn.data == value %}selected{% endif %}>
+                                  {{ label }}
+                                </option>
+                              {% endfor %}
+                            </optgroup>
+                          {% endfor %}
+                        </select>
+                        {% for err in form.skill_to_learn.errors %}
+                          <span class="error">{{ err }}</span>
+                        {% endfor %}
+                      </div>
+                      
+                      
+                  
+                    <div class="form-group">
+                      {{ form.preferred_skill_level.label }}
+                      {{ form.preferred_skill_level(class="form-control") }}
+                    </div>
+                  
+                    <div class="form-group">
+                      {{ form.country.label }}
+                      {{ form.country(class="form-control") }}
+                    </div>
+                  
+                    <button type="submit" class="find-match-btn">
+                        <i class="fas fa-search"></i>
+                        {{ form.submit.label.text }}
+                      </button>
+                      
+                  </form>
+                  
+              </div>
+            </div>
+        </div>
+
+    
+        {% if match %}
+        <div class="form-card" style="max-width:600px; margin:2rem auto;">
+            <h2>Your Match</h2>
+            
+            <div class="match-header">
+                <div class="match-details">
+                    <h3>{{ match.username }}</h3>
+                    <p>Age: {{ (date.today().year - match.date_of_birth.year) - ((date.today().month, date.today().day) < (match.date_of_birth.month, match.date_of_birth.day)) }}</p>
+                    <p>Location: {{ match.country }}</p>
+                </div>
+            </div>
+            <div class="match-skills">
+                <h4>Skill to Teach:</h4>
+                <p>{{ match.primary_skill|title }}</p>
+                <h4>Skill Level:</h4>
+                <p>{{ match.skill_level|capitalize }}</p>
+            </div>
+            <div class="match-actions">
+                <a href="{{ url_for('chat', recipient_id=match.user_id) }}" class="btn"><i class="fas fa-comments"></i> Start Chat</a>
+                <a href="{{ url_for('browse_matches') }}" class="btn-outline">
+                    <i class="fas fa-sync"></i> Find a Different Match
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Redirect Note -->
+        <div class="redirect-note">
+            <p>Not interested in skill exchange? <a href="{{ url_for('browse_teachers') }}">Browse available teachers instead</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <!-- Column 1: Logo & Socials -->
+            <div class="logo-col">
+                <div class="logo"><i class="fas fa-briefcase"></i> Skillex</div>
+                <p>Connecting people through shared knowledge and skill exchange.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+  
+            <!-- Column 2: Quick Links -->
+            <div>
+                <p>Home</p>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>FAQ</p>
+                <p>Sign Up</p>
+            </div>
+  
+            <!-- Column 3: Categories -->
+            <div>
+                <p>Language Learning</p>
+                <p>Crafts & DIY</p>
+                <p>Programming</p>
+                <p>Cooking</p>
+                <p>Business Skills</p>
+            </div>
+  
+            <!-- Column 4: Contact Details -->
+            <div>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Skill Street, Knowledge City, SK 12345</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> contact@skillex.com</p>
+            </div>
+        </div>
+  
+        <div class="footer-bottom">
+            <span>© 2025 Skillex. All rights reserved.</span>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // User dropdown menu handling
+        document.querySelector('.user-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const menu = this.parentElement.querySelector('.dropdown-menu');
+            const caret = this.querySelector('.caret');
+            menu.classList.toggle('show');
+            caret.classList.toggle('rotated');
+        });
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                const caret = menu.previousElementSibling.querySelector('.caret');
+                if (caret) caret.classList.remove('rotated');
+            });
+        });
+    </script>
+</body>
+</html> 
+
